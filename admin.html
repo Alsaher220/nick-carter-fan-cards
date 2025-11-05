@@ -343,15 +343,15 @@
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
         import { getDatabase, ref, push, onValue, set, remove, update } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js';
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyAb6M2aJnrs6wQ6ErZQeaO-U57rLoizjvk",
-            authDomain: "nickcarterfancard.firebaseapp.com",
-            databaseURL: "https://nickcarterfancard-default-rtdb.firebaseio.com",
-            projectId: "nickcarterfancard",
-            storageBucket: "nickcarterfancard.firebasestorage.app",
-            messagingSenderId: "639744501365",
-            appId: "1:639744501365:web:58a4d842e623ad3b1a7a3c"
-        };
+       const firebaseConfig = {
+    apiKey: "AIzaSyAb6M2aJnrs6wQ6ErZQeaO-U57rLoizjvk",
+    authDomain: "nickcarterfancard.firebaseapp.com",
+    databaseURL: "https://nickcarterfancard-default-rtdb.firebaseio.com", // ← CHECK THIS
+    projectId: "nickcarterfancard",
+    storageBucket: "nickcarterfancard.firebasestorage.app",
+    messagingSenderId: "639744501365",
+    appId: "1:639744501365:web:58a4d842e623ad3b1a7a3c"
+};
 
         const app = initializeApp(firebaseConfig);
         const database = getDatabase(app);
