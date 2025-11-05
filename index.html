@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Fan Card</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        body.gold-theme {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 50%, #FF8C00 100%);
+        }
+        .container { max-width: 500px; width: 100%; }
+        .card-section {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        .gold-theme .card-section {
+            border: 3px solid #FFD700;
+            box-shadow: 0 20px 60px rgba(255, 215, 0, 0.4);
+        }
+        .welcome {
+            text-align: center;
+            font-size: 22px;
+            color: #667eea;
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+        .gold-theme .welcome { color: #FF8C00; font-size: 26px; }
+        .vip-badge {
+            text-align: center;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.5);
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+        .video-section {
+            margin: 25px 0;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .live-badge {
+            background: #ff0000;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+        .live-dot {
+            width: 10px;
+            height: 10px;
+            background: white;
+            border-radius: 50%;
+            animation: blink 1s infinite;
+        }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+        .card-wrapper { perspective: 1000px; margin: 30px 0; }
+        .fan-card {
+            width: 100%;
+            height: 400px;
+            position: relative;
+            transform-style: preserve-3d;
+            animation: spin 6s linear infinite;
+        }
+        @keyframes spin { 0% { transform: rotateY(0deg); } 100%​​​​​​​​​​​​​​​​
+
+{ transform: rotateY(360deg); } }
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        .card-front {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .gold-theme .card-front { background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%); }
+        .card-back {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            transform: rotateY(180deg);
+        }
+        .gold-theme .card-back { background: linear-gradient(135deg, #FF8C00 0%, #FF6347 100%); }
+        .celeb-photo {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 5px solid white;
+            margin-bottom: 20px;
+            object-fit: cover;
+            background: white;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+        }
+        .gold-theme .celeb-photo {
+            border: 6px solid #FFD700;
+            box-shadow: 0 5px 20px rgba(255, 215, 0, 0.6);
+        }
+        .fan-name {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .card-title { font-size: 18px; opacity: 0.95; margin-bottom: 5px; }
+        .celeb-name { font-size: 24px; font-weight: bold; margin-top: 10px; }
+        .chat-container {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 25px 0;
+        }
+        .gold-theme .chat-container {
+            background: linear-gradient(to right, #fff9e6, #fffaed);
+            border: 2px solid #FFD700;
+        }
+        .chat-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        .gold-theme .chat-title { color: #FF8C00; }
+        .chat-messages {
+            max-height: 300px;
+            overflow-y: auto;
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        .chat-msg {
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            max-width: 80%;
+        }
+        .chat-msg.fan {
+            background: #e3f2fd;
+            margin-left: 0;
+            margin-right: auto;
+        }
+        .chat-msg.admin {
+            background: #fff3cd;
+            margin-left: auto;
+            margin-right: 0;
+        }
+        .chat-input-box { display: flex; gap: 10px; }
+        .chat-input-box input {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        .chat-input-box button {
+            width: auto;
+            padding: 12px 20px;
+            background: #667eea;
+        }
+        .gold-theme .chat-input-box button {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+        }
+        .link-box {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 25px;
+        }
+        .gold-theme .link-box {
+            background: linear-gradient(to right, #fff9e6, #fffaed);
+            border: 2px solid #FFD700;
+        }
+        .link-display {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            word-break: break-all;
+            margin: 12px 0;
+            border: 2px solid #667eea;
+            font-family: monospace;
+            font-size: 13px;
+            color: #333;
+        }
+        .gold-theme .link-display { border: 2px solid #FFD700; }
+        button {
+            width: 100%;
+            padding: 14px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        button:hover { opacity: 0.9; }
+        .gold-theme button { background: linear-gradient(135deg, #FFD700, #FFA500); }
+        .music-control {
+            text-align: center;
+            margin-top: 15px;
+            padding: 12px;
+            background: rgba(102,126,234,0.1);
+            border-radius: 8px;
+        }
+        .gold-theme .music-control { background: rgba(255,215,0,0.1); }
+        .music-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .gold-theme .music-btn { background: linear-gradient(135deg, #FFD700, #FFA500); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card-section" id="content"></div>
+    </div>
+    <audio id="bgMusic" loop>
+        <source src="https://cdn.pixabay.com/audio/2022/05/27/audio_1808fbf07a.mp3" type="audio/mpeg">
+    </audio>
+
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
+        import { getDatabase, ref, push, onValue } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAb6M2aJnrs6wQ6ErZQeaO-U57rLoizjvk",
+            authDomain: "nickcarterfancard.firebaseapp.com",
+            databaseURL: "https://nickcarterfancard-default-rtdb.firebaseio.com",
+            projectId: "nickcarterfancard",
+            storageBucket: "nickcarterfancard.firebasestorage.app",
+            messagingSenderId: "639744501365",
+            appId: "1:639744501365:web:58a4d842e623ad3b1a7a3c"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
+        let musicPlaying = false;
+        const audio = document.getElementById('bgMusic');
+        let fanId = '';
+
+        window.toggleMusic = function() {
+            if (musicPlaying) {
+                audio.pause();
+                event.target.textContent = '🔇 Play Music';
+                musicPlaying = false;
+            } else {
+                audio.play();
+                event.target.textContent = '🔊 Pause Music';
+                musicPlaying = true;
+            }
+        };
+
+        window.sendFanMessage = function() {
+            const input = document.getElementById('fanChatInput');
+            const text = input.value.trim();
+            if (!text || !fanId) return;
+            
+            const chatRef = ref(database, 'chats/' + fanId);
+            push(chatRef, {
+                from: 'fan',
+                text: text,
+                time: new Date().toISOString()
+            });
+            
+            input.value = '';
+        };
+
+        function displayChat() {
+            if (!fanId) return;
+            
+            const chatRef = ref(database, 'chats/' + fanId);
+            onValue(chatRef, (snapshot) => {
+                const messages = [];
+                snapshot.forEach((child) => {
+                    messages.push(child.val());
+                });
+                
+                const container = document.getElementById('chatMessages');
+                if (messages.length === 0) {
+                    container.innerHTML = '<p style="text-align:center;color:#666;padding:20px">No messages yet. Say hi to Nick!</p>';
+                    return;
+                }
+                
+                container.innerHTML = messages.map(m => `
+                    <div class="chat-msg ${m.from}">
+                        <div style="font-weight:bold;font-size:12px;margin-bottom:5px;color:#666">
+                            ${m.from === 'fan' ? 'You' : 'Nick Carter'}
+                        </div>
+                        <div>${m.text}</div>
+                        <div style="font-size:11px;color:#999;margin-top:5px">${new Date(m.time).toLocaleString()}</div>
+                    </div>
+                `).join('');
+                
+                container.scrollTop = container.scrollHeight;
+            });
+        }
+
+        window.copyLink = function() {
+            navigator.clipboard.writeText(window.location.href);
+            event.target.textContent = '✅ Link Copied!';
+            const isGold = document.body.classList.contains('gold-theme');
+            event.target.style.background = isGold ? '#FF8C00' : '#218838';
+            setTimeout(() => {
+                event.target.textContent = '📋 Copy & Save This Link';
+                event.target.style.background = '';
+            }, 3000);
+        };
+
+        window.onload = function() {
+            const params = new URLSearchParams(window.location.search);
+            const fanName = params.get('name');
+            const celebName = params.get('celeb');
+            const celebPhoto = params.get('photo');
+            const cardType = params.get('type') || 'regular';
+            fanId = params.get('fanId') || '';
+            
+            if (fanName && celebName) {
+                const data = localStorage.getItem('fanData');
+                let videoUrl = '';
+                let videoTitle = '🔴 LIVE: Nick\'s Exclusive Fan Update';
+                
+                if (data) {
+                    const parsed = JSON.parse(data);
+                    videoUrl = parsed.celeb?.video || '';
+                    videoTitle = parsed.celeb?.videoTitle || videoTitle;
+                }
+                
+                const videoRef = ref(database, 'videoSettings');
+                onValue(videoRef, (snapshot) => {
+                    const videoData = snapshot.val();
+                    const hasWatched = localStorage.getItem('watched_' + fanId);
+                    
+                    if (videoData && !hasWatched) {
+                        videoUrl = videoData.url || videoUrl;
+                        videoTitle = videoData.title || videoTitle;
+                        
+                        if (videoUrl && document.getElementById('videoSection')) {
+                            document.getElementById('videoSection').innerHTML = `
+                                <div class="live-badge">
+                                    <div class="live-dot"></div>
+                                    ${videoTitle}
+                                </div>
+                                <iframe id="videoPlayer" width="100%" height="280" src="${videoUrl}?autoplay=1&controls=0&modestbranding=1&rel=0&showinfo=0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border-radius:10px"></iframe>
+                            `;
+                            
+                            setTimeout(() => {
+                                localStorage.setItem('watched_' + fanId, 'true');
+                                document.getElementById('videoSection').innerHTML = `
+                                    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; border-radius: 15px; text-align: center; color: white;">
+                                        <div style="font-size: 48px; margin-bottom: 15px;">✨</div>
+                                        <h3 style="font-size: 20px; margin-bottom: 10px;">Thanks for watching!</h3>
+                                        <p style="opacity: 0.9;">This live stream has ended.</p>
+                                    </div>
+                                `;
+                            }, 30000);
+                        }
+                    } else if (videoData && hasWatched) {
+                        if (document.getElementById('videoSection')) {
+                            document.getElementById('videoSection').innerHTML = `
+                                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; border-radius: 15px; text-align: center; color: white;">
+                                    <div style="font-size: 48px; margin-bottom: 15px;">✨</div>
+                                    <h3 style="font-size: 20px; margin-bottom: 10px;">Thanks for watching!</h3>
+                                    <p style="opacity: 0.9;">This live stream has ended.</p>
+                                </div>
+                            `;
+                        }
+                    }
+                });
+                
+                const isGold = cardType === 'gold';
+                if (isGold) document.body.classList.add('gold-theme');
+
+                const photo = celebPhoto || 'https://via.placeholder.com/150/667eea/ffffff?text=Photo';
+                const goldBadge = isGold ? '<div class="vip-badge">👑 GOLD VIP MEMBER 👑</div>' : '';
+                
+                const hasWatched = localStorage.getItem('watched_' + fanId);
+                
+                let videoSection = '';
+                if (videoUrl && !hasWatched) {
+                    videoSection = `
+                        <div class="video-section" id="videoSection">
+                            <div class="live-badge">
+                                <div class="live-dot"></div>
+                                ${videoTitle}
+                            </div>
+                            <iframe id="videoPlayer" width="100%" height="280" src="${videoUrl}?autoplay=1&controls=0&modestbranding=1&rel=0&showinfo=0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border-radius:10px"></iframe>
+                        </div>
+                    `;
+                } else if (videoUrl && hasWatched) {
+                    videoSection = `
+                        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; border-radius: 15px; text-align: center; color: white; margin: 25px 0;">
+                            <div style="font-size: 48px; margin-bottom: 15px;">✨</div>
+                            <h3 style="font-size: 20px; margin-bottom: 10px;">Thanks for watching!</h3>
+                            <p style="opacity: 0.9;">This live stream has ended.</p>
+                        </div>
+                    `;
+                } else {
+                    videoSection = '<div class="video-section" id="videoSection"></div>';
+                }
+                
+                document.getElementById('content').innerHTML = `
+                    ${goldBadge}
+                    <div class="welcome">✨ Your Exclusive Fan Card ✨</div>
+                    
+                    ${videoSection}
+                    
+                    <div class="card-wrapper">
+                        <div class="fan-card">
+                            <div class="card-face card-front">
+                                <img src="${photo}" class="celeb-photo" onerror="this.src='https://via.placeholder.com/150/667eea/ffffff?text=Photo'">
+                                <div class="fan-name">${fanName}</div>
+                                <div class="card-title">${isGold ? 'Gold VIP Fan' : 'Official Fan'}</div>
+                                <div class="celeb-name">${celebName}</div>
+                                ${isGold ? '<div style="margin-top:10px;font-size:16px;">👑</div>' : ''}
+                            </div>
+                            <div class="card-face card-back">
+                                <img src="${photo}" class="celeb-photo" onerror="this.src='https://via.placeholder.com/150/667eea/ffffff?text=Photo'">
+                                <div class="card-title">Thank you for your ${isGold ? 'VIP ' : ''}support!</div>
+                                <div class="celeb-name">${celebName}</div>
+                                <div style="margin-top:20px;font-size:14px;opacity:0.9">
+                                    You're part of something special ✨
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="music-control">
+                        <button class="music-btn" onclick="toggleMusic()">🔊 Play Music</button>
+                    </div>
+                    
+                    <div class="chat-container">
+                        <div class="chat-title">💬 Chat with Nick</div>
+                        <div class="chat-messages" id="chatMessages"></div>
+                        <div class="chat-input-box">
+                            <input type="text" id="fanChatInput" placeholder="Type your message..." onkeypress="if(event.key==='Enter') sendFanMessage()">
+                            <button onclick="sendFanMessage()">📤 Send</button>
+                        </div>
+                    </div>
+                    
+                    <div class="link-box">
+                        <strong style="display:block;margin-bottom:8px;color:#333">📌 Your Personal Link:</strong>
+                        <div class="link-display">${window.location.href}</div>
+                        <button onclick="copyLink()">📋 Copy & Save This Link</button>
+                        <p style="margin-top:12px;font-size:13px;color:#666;text-align:center">
+                            Bookmark this link to view your card anytime!
+                        </p>
+                    </div>
+                `;
+                
+                displayChat();
+                
+                if (videoUrl && !localStorage.getItem('watched_' + fanId)) {
+                    const videoPlayer = document.getElementById('videoPlayer');
+                    if (videoPlayer) {
+                        setTimeout(() => {
+                            localStorage.setItem('watched_' + fanId, 'true');
+                        }, 30000);
+                    }
+                }
+                
+            } else {
+                document.getElementById('content').innerHTML = `
+                    <div style="text-align:center;padding:40px">
+                        <h1 style="color:#667eea;margin-bottom:20px;font-size:32px">🌟 Nick Carter Fan Cards</h1>
+                        <p style="font-size:16px;color:#666;line-height:1.8">
+                            Welcome! This is the Nick Carter official fan card system.
+                            <br><br>
+                            If you received a personalized fan card link, please use that link to view your exclusive digital fan card.
+                            <br><br>
+                            <span style="color:#999;font-size:14px">Don't have a fan card yet? Contact your administrator!</span>
+                        </p>
+                    </div>
+                `;
+            }
+        };
+    </script>
+</body>
+</html>
